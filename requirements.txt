@@ -1,0 +1,6 @@
+kafka-python 
+requests 
+boto3 
+flask 
+flask-cors
+pyspark
