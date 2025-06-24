@@ -33,12 +33,13 @@ This project demonstrates a complete, containerized data pipeline for collecting
 - Pull and Run LocalStack:
   ```bash
   docker run -d --name localstack -p 4566:4566 -e SERVICES=s3,iam,lambda -e DEFAULT_REGION=us-east-1 -e HOSTNAME_EXTERNAL=localhost localstack/localstack
- 
+  ```
 - Start Other Images:
-    
     ```bash 
     cd docker-img
     docker compose up -d
+    ```
+- once you run the above command `docker compose`, it will create Kafka, Zookeeper and MySQL. The MySQL exposed port from `3306 -> 3307`. You need carefully, configure for back-edn API in Python to interact with MySQL 
 
 ### 2. Provision AWS Resources with Terraform
 
@@ -49,11 +50,11 @@ This project demonstrates a complete, containerized data pipeline for collecting
     terraform init
     terraform plan
     terraform apply -auto-approve
-
+    ```
 - Test S3 Bucket:
     ```bash
-    curl http://localhost:4566/github-pipeline-bucket
-
+    curl http://localhost:4566/github-pipeline-bucket   
+    ```
 ### 3. Kafka Monitoring (Optional)
 
 - Install Offset Explorer: https://www.kafkatool.com/
@@ -68,11 +69,12 @@ This project demonstrates a complete, containerized data pipeline for collecting
     python3 -m venv .myenv        # Mac/Linux
     .myenv\Scripts\activate       # Windows
     source .myenv/bin/activate    # Mac/Linux
-
+    ```
 - Install dependencies:
     ```bash
     pip install -r requirements.txt
-
+    ```
+    
 ### 📊 Pipeline Workflow
 
 #### Step 1: GitHub Data Producer
@@ -92,22 +94,22 @@ This project demonstrates a complete, containerized data pipeline for collecting
     
     ``` 
     python flask_app.py
-
+    ```
 ### 💻 Frontend Dashboard
 - Navigate to `react-dashboard` directory:
     ```
     npm install
     npm start
-
+    ```
 - Access the dashboard at:
     ``` 
     http://localhost:3000
-
+    ```
 ### 🐳 Docker Container Access
 - To access a running container:
     ```
     docker exec -it <CONTAINER_ID> bash
-
+    ```
 ### 📂 Directory Structure
 
     ├── docker-img/           # Docker Compose files
