@@ -42,7 +42,7 @@ This project demonstrates a complete, containerized data pipeline for collecting
 
 ### 2. Provision AWS Resources with Terraform
 
-- Install Terraform: Terraform Installation
+- Install Terraform: Terraform Installation as per your OS.
     - [Download Terraform](https://developer.hashicorp.com/terraform/install)
 - From the terraforms directory:
     ```bash
