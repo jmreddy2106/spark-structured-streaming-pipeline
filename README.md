@@ -43,7 +43,7 @@ This project demonstrates a complete, containerized data pipeline for collecting
 ### 2. Provision AWS Resources with Terraform
 
 - Install Terraform: Terraform Installation
-
+    - [Download Terraform](https://developer.hashicorp.com/terraform/install)
 - From the terraforms directory:
     ```bash
     terraform init
@@ -51,7 +51,7 @@ This project demonstrates a complete, containerized data pipeline for collecting
     terraform apply -auto-approve
 
 - Test S3 Bucket:
-    ``` bash
+    ```bash
     curl http://localhost:4566/github-pipeline-bucket
 
 ### 3. Kafka Monitoring (Optional)
