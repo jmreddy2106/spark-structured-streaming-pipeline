@@ -126,11 +126,11 @@ exploded_df = raw_df.select("id", "title", explode("labels").alias("label")).sel
 
 
 # Write to local filesystem partitioned by label name
-exploded_df.write \
-    .mode("overwrite") \
-    .partitionBy("program_name") \
-    .format("json") \
-    .save("file:///D:/projects/real-time-pipeline/issues_partitioned_by_label")
+#exploded_df.write \
+#    .mode("overwrite") \
+#    .partitionBy("program_name") \
+#    .format("json") \
+#    .save("file:///D:/projects/real-time-pipeline/issues_partitioned_by_label")
 
 
 exploded_df.show()
@@ -142,34 +142,33 @@ exploded_df.show()
 
 
 ## 1. Load existing IDs from MySQL
-#existing_df = spark.read \
-#    .format("jdbc") \
-#    .option("url", "jdbc:mysql://localhost:3307/github") \
-#    .option("dbtable", "issues") \
-#    .option("user", "root") \
-#    .option("password", "password") \
-#    .option("driver", "com.mysql.cj.jdbc.Driver") \
-#    .load()
-#
-#existing_ids = [row["id"] for row in existing_df.select("id").collect()]
-#
-## 2. Filter out already existing rows in Spark
-#filtered_df = exploded_df.filter(~exploded_df["id"].isin(existing_ids))
-#
-#
-## Write to MySQL
-#count = filtered_df.count()
-#if count > 0:
-#    print(f"✅ {count} new unique records will be written to MySQL.")
-#    filtered_df.write \
-#        .format("jdbc") \
-#        .option("url", "jdbc:mysql://localhost:3307/github") \
-#        .option("driver", "com.mysql.cj.jdbc.Driver") \
-#        .option("dbtable", "issues") \
-#        .option("user", "root") \
-#        .option("password", "password") \
-#        .mode("append") \
-#        .save()
-#else:
-#    print("ℹ️ No new unique records to insert.")
-#
+existing_df = spark.read \
+   .format("jdbc") \
+   .option("url", "jdbc:mysql://localhost:3307/github") \
+   .option("dbtable", "issues") \
+   .option("user", "root") \
+   .option("password", "password") \
+   .option("driver", "com.mysql.cj.jdbc.Driver") \
+   .load()
+
+existing_ids = [row["id"] for row in existing_df.select("id").collect()]
+
+# 2. Filter out already existing rows in Spark
+filtered_df = exploded_df.filter(~exploded_df["id"].isin(existing_ids))
+
+
+# Write to MySQL
+count = filtered_df.count()
+if count > 0:
+   print(f"✅ {count} new unique records will be written to MySQL.")
+   filtered_df.write \
+       .format("jdbc") \
+       .option("url", "jdbc:mysql://localhost:3307/github") \
+       .option("driver", "com.mysql.cj.jdbc.Driver") \
+       .option("dbtable", "issues") \
+       .option("user", "root") \
+       .option("password", "password") \
+       .mode("append") \
+       .save()
+else:
+   print("ℹ️ No new unique records to insert.")

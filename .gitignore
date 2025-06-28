@@ -2,3 +2,8 @@ myenv/
 
 .vscode/
 
+terraforms/.terraform
+terraforms/.terraform.lock.hcl
+
+terraform.tfstate
+
