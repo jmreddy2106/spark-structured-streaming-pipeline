@@ -86,8 +86,19 @@ This project demonstrates a complete, containerized data pipeline for collecting
     python kafka_to_s3.py
 
 #### Step 3: Spark Processing to MySQL
+To run PySpark job, follow below step up.
 
+- Download the [spark-hadoop](https://archive.apache.org/dist/spark/spark-3.5.5/spark-3.5.5-bin-hadoop3.tgz) and extract or unzip into `C:\` on windows or `/opt/` in Linux (change permissions ot read and write). Add the spark directory to your system `PATH` and `SPARK_HOME`. Once the `SPARK_HOME`, set completed, run the `spark-shell` in cmd/terminal.   
+
+- You also need extra .jars to rea from S3A raw data from localstack to MySQL curated data. Download below `.jars ` and copy/move files to `<SPARK-HOME>/jars/`. 
+
+- [MySQL Drivers](https://cdn.mysql.com/archives/mysql-connector-java-8.3/mysql-connector-j-8.3.0.zip)
+- [Hadoop-AWS](https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.1/hadoop-aws-3.3.1.jar)
+- [AWS-java-sdk-Bundle](https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.1026/aws-java-sdk-bundle-1.11.1026.jar)
+
+    ```
     python spark_s3_to_mysql.py
+    ```
 
 ### 🌐 Backend API
 - Run the Flask server:

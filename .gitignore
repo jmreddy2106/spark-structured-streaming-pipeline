@@ -7,3 +7,4 @@ terraforms/.terraform.lock.hcl
 
 terraform.tfstate
 
+react-dashboard/node_modules
