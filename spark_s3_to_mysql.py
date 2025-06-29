@@ -135,40 +135,19 @@ exploded_df = raw_df.select("id", "title", explode("labels").alias("label")).sel
 
 exploded_df.show()
 
-#df = raw_df.select("id", "title")
-
-# Show to verify
-#df.show(truncate=False)
-
-
 ## 1. Load existing IDs from MySQL
-existing_df = spark.read \
-   .format("jdbc") \
-   .option("url", "jdbc:mysql://localhost:3307/github") \
-   .option("dbtable", "issues") \
-   .option("user", "root") \
-   .option("password", "password") \
-   .option("driver", "com.mysql.cj.jdbc.Driver") \
-   .load()
 
-existing_ids = [row["id"] for row in existing_df.select("id").collect()]
+exploded_df.write \
+    .format("jdbc") \
+    .option("url", "jdbc:mysql://localhost:3307/github") \
+    .option("driver", "com.mysql.cj.jdbc.Driver") \
+    .option("dbtable", "issues") \
+    .option("user", "root") \
+    .option("password", "password") \
+    .mode("append") \
+    .save()
 
-# 2. Filter out already existing rows in Spark
-filtered_df = exploded_df.filter(~exploded_df["id"].isin(existing_ids))
+print("ℹ️ Database table updated...!")
 
+spark.stop()
 
-# Write to MySQL
-count = filtered_df.count()
-if count > 0:
-   print(f"✅ {count} new unique records will be written to MySQL.")
-   filtered_df.write \
-       .format("jdbc") \
-       .option("url", "jdbc:mysql://localhost:3307/github") \
-       .option("driver", "com.mysql.cj.jdbc.Driver") \
-       .option("dbtable", "issues") \
-       .option("user", "root") \
-       .option("password", "password") \
-       .mode("append") \
-       .save()
-else:
-   print("ℹ️ No new unique records to insert.")
